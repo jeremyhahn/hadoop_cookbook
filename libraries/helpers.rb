@@ -2,7 +2,7 @@
 # Cookbook Name:: hadoop
 # Library:: helpers
 #
-# Copyright © 2015 Cask Data, Inc.
+# Copyright © 2015-2016 Cask Data, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -60,6 +60,12 @@ module Hadoop
         '2.3.0.0-2557'
       when '2.3.2.0'
         '2.3.2.0-2950'
+      when '2.3.4.0'
+        '2.3.4.0-3485'
+      when '2.3.4.7'
+        '2.3.4.7-4'
+      when '2.4.0.0'
+        '2.4.0.0-169'
       else
         node['hadoop']['distribution_version']
       end
@@ -77,6 +83,20 @@ module Hadoop
     #
     def iop?
       node['hadoop']['distribution'] == 'iop'
+    end
+
+    # Return correct package name on ODP-based distributions
+    #
+    # Given name: hadoop-mapreduce-historyserver
+    # ODP name: hadoop_2_4_0_0_169-mapreduce-historyserver
+    #
+    def hadoop_package(name)
+      return name unless hdp22?
+      return name if node['platform_family'] == 'debian'
+      fw = name.split('-').first
+      pv = hdp_version.tr('.', '_').tr('-', '_')
+      nn = "#{fw}_#{pv}"
+      name.gsub(fw, nn)
     end
 
     #
