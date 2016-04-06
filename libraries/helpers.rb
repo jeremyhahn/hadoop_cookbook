@@ -91,7 +91,7 @@ module Hadoop
     # ODP name: hadoop_2_4_0_0_169-mapreduce-historyserver
     #
     def hadoop_package(name)
-      return name unless hdp22?
+      return name unless hdp22? || iop?
       return name if node['platform_family'] == 'debian'
       fw = name.split('-').first
       pv = hdp_version.tr('.', '_').tr('-', '_')
