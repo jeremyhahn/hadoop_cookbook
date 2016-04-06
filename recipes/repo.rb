@@ -345,6 +345,8 @@ when 'iop'
       gpgkey yum_repo_key_url
       action :add
     end
+  else
+    Chef::Application.fatal!("IBM Open Platform only supports RHEL-family! You're on #{node['platform_family']}!")
   end
 
 else
