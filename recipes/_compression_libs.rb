@@ -37,7 +37,7 @@ if hdp22?
   when 'rhel'
     pkgs += ['lzo', 'lzo-devel', 'hadooplzo', 'hadooplzo-native']
   end
-elif iop?
+elsif iop?
   pkgs += ['lzo', 'lzo-devel', 'hadoop-lzo', 'hadoop-lzo-native']
 end
 
