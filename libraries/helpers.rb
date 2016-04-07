@@ -94,7 +94,12 @@ module Hadoop
       return name unless hdp22? || iop?
       return name if node['platform_family'] == 'debian'
       fw = name.split('-').first
-      pv = hdp_version.tr('.', '_').tr('-', '_')
+      pv =
+        if hdp22?
+          hdp_version.tr('.', '_').tr('-', '_')
+        else
+          node['hadoop']['distribution_version'].tr('.', '_')
+        end
       nn = "#{fw}_#{pv}"
       name.gsub(fw, nn)
     end
@@ -102,14 +107,12 @@ module Hadoop
     #
     # Return true if Kerberos is enabled
     #
-    # rubocop: disable Metrics/AbcSize
     def hadoop_kerberos?
       node['hadoop']['core_site'].key?('hadoop.security.authorization') &&
         node['hadoop']['core_site'].key?('hadoop.security.authentication') &&
         node['hadoop']['core_site']['hadoop.security.authorization'].to_s == 'true' &&
         node['hadoop']['core_site']['hadoop.security.authentication'] == 'kerberos'
     end
-    # rubocop: enable Metrics/AbcSize
 
     #
     # Return parent directory for various Hadoop lib directories and homes
