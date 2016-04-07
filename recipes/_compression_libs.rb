@@ -37,6 +37,8 @@ if hdp22?
   when 'rhel'
     pkgs += ['lzo', 'lzo-devel', 'hadooplzo', 'hadooplzo-native']
   end
+elif iop?
+  pkgs += ['lzo', 'lzo-devel', 'hadoop-lzo', 'hadoop-lzo-native']
 end
 
 pkgs.each do |pkg|
