@@ -20,20 +20,15 @@
 major_platform_version = node['platform_version'].to_i
 key = 'RPM-GPG-KEY'
 
-# Ensure that we have the proper LWRPs available
-case node['platform_family']
-when 'rhel'
-  include_recipe 'yum'
-when 'debian'
-  include_recipe 'apt'
-end
+# Ensure apt caches are updated and apt resources available
+include_recipe 'apt' if node['platform_family'] == 'debian'
 
 # Set defaults for version, based on distribution
 node.default['hadoop']['distribution_version'] =
   if node['hadoop']['distribution'] == 'hdp'
-    '2.1.15.0'
+    '2.3.4.7'
   elsif node['hadoop']['distribution'] == 'cdh'
-    '5.3.5'
+    '5.6.0'
   elsif node['hadoop']['distribution'] == 'bigtop'
     '1.0.0'
   elsif node['hadoop']['distribution'] == 'iop'
